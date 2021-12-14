@@ -85,7 +85,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         validate.setOnClickListener(v -> {
-            fetchCity(city.getText().toString());
+            String c = city.getText().toString();
+            fetchCity(c);
+            Database mydb = new Database(this);
+            mydb.insertCity(c);
         });
     }
 
@@ -227,6 +230,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 System.out.println(addresses.get(0).getLocality());
                 NameCity = addresses.get(0).getLocality();
                 System.out.println("-----------------------------------------" + NameCity);
+
             }
         } catch (IOException e) {
             e.printStackTrace();
