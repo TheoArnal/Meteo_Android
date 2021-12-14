@@ -68,11 +68,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         double lng = location2.getLongitude();
 
         GetCity(lat, lng);
-        System.out.println(GpsCity);
-        System.out.println(lat);
-        System.out.println(lng);
-
-
 
         temp = findViewById(R.id.textView1);
         cond = findViewById(R.id.textView2);
