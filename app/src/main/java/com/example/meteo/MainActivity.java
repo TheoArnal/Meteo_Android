@@ -59,9 +59,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         double lat = location2.getLatitude();
         double lng = location2.getLongitude();
 
+        System.out.println(lat);
+        System.out.println(lng);
 
         // essayer de recuper nom de la ville avec les coordonnées (GeoCoder)
-
 
 
 
@@ -211,6 +212,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
         }
     }
+
+
+
+
 
 
     @Override
