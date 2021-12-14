@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     ImageView img;
     LocationManager locationManager;
     String provider;
+    Context context;
+    String GpsCity;
     boolean isGPSEnabled = false;
     boolean isNetworkEnabled = false;
 
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        this.context = this;
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         provider = locationManager.getBestProvider(new Criteria(), false);
         checkLocationPermission();
@@ -66,12 +68,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         double lng = location2.getLongitude();
 
         GetCity(lat, lng);
-
+        System.out.println(GpsCity);
         System.out.println(lat);
         System.out.println(lng);
-
-        // essayer de recuper nom de la ville avec les coordonnées (GeoCoder)
-
 
 
 
@@ -82,6 +81,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         img = findViewById(R.id.imageView);
         String location = city.getText().toString();
         validate = findViewById(R.id.button);
+
+        city.setText(GpsCity);
+        fetchCity(GpsCity);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         validate.setOnClickListener(v -> {
@@ -219,7 +221,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
 
-
     public void GetCity(double longitude, double latitude){
         String NameCity;
         Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
@@ -230,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 System.out.println(addresses.get(0).getLocality());
                 NameCity = addresses.get(0).getLocality();
                 System.out.println("-----------------------------------------" + NameCity);
-
+                GpsCity = NameCity;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -243,4 +244,44 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onLocationChanged(Location location) {
 
     }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder build = new AlertDialog.Builder(context);
+
+        build.setTitle("Quitter l'application");
+        build.setMessage("Voulez-vous vraiment quitté l'application ?");
+
+        build.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+
+        build.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog alertDialog = build.create();
+        alertDialog.show();
+    }
+
 }
