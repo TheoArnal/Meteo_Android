@@ -10,7 +10,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -31,6 +33,10 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
@@ -58,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         Location location2 = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         double lat = location2.getLatitude();
         double lng = location2.getLongitude();
+
+        GetCity(lat, lng);
 
         System.out.println(lat);
         System.out.println(lng);
@@ -191,9 +199,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-
-                    // permission was granted, yay! Do the
-                    // location-related task you need to do.
                     if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.ACCESS_COARSE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
@@ -204,9 +209,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                 } else {
 
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-
                 }
                 return;
             }
@@ -215,6 +217,21 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
 
 
+    public void GetCity(double longitude, double latitude){
+        String NameCity;
+        Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
+        List<Address> addresses;
+        try {
+            addresses = gcd.getFromLocation(longitude, latitude, 1);
+            if (addresses.size() > 0 ) {
+                System.out.println(addresses.get(0).getLocality());
+                NameCity = addresses.get(0).getLocality();
+                System.out.println("-----------------------------------------" + NameCity);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
