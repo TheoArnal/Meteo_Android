@@ -2,8 +2,10 @@ package com.example.meteo;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -37,6 +39,21 @@ public class Database extends SQLiteOpenHelper {
         System.out.println("---------------------------------------------------------------------------------- let's go");
         db.setTransactionSuccessful();
         db.endTransaction();
+    }
+
+    public void readData()
+    {
+        Log.i("APP", "Reading database...");
+        String select = new String("SELECT DISTINCT * from " + DATABASE_TABLE_NAME);
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(select, null);
+        Log.i("APP", "Number of entries: " + cursor.getCount());
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            do {
+                Log.i("APP", "Reading: " + cursor.getString(cursor.getColumnIndex(COL1)));
+            } while (cursor.moveToNext());
+        }
     }
 
 

@@ -14,6 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Meteo">
+        <activity
+            android:name=".MainActivity2"
+            android:exported="true" />
+
         <receiver
             android:name=".MeteoWidget"
             android:exported="true">
