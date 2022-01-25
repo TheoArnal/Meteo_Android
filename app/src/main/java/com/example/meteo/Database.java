@@ -7,13 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
+import java.util.ArrayList;
 
 public class Database extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_TABLE_NAME = "MeteoDB";
     private static final String PKEY = "pkey";
     private static final String COL1 = "City";
+    public ArrayList<String> CityArray = new ArrayList<String>();
 
     Database (Context context) { super(context, DATABASE_TABLE_NAME, null, DATABASE_VERSION);}
 
@@ -41,8 +42,9 @@ public class Database extends SQLiteOpenHelper {
         db.endTransaction();
     }
 
-    public void readData()
+    public ArrayList<String> readData()
     {
+
         Log.i("APP", "Reading database...");
         String select = new String("SELECT DISTINCT * from " + DATABASE_TABLE_NAME);
         SQLiteDatabase db = getReadableDatabase();
@@ -52,8 +54,20 @@ public class Database extends SQLiteOpenHelper {
             cursor.moveToFirst();
             do {
                 Log.i("APP", "Reading: " + cursor.getString(cursor.getColumnIndex(COL1)));
+                String item = cursor.getString(cursor.getColumnIndex(COL1)).toLowerCase();
+                if (CityArray.contains(item)){
+                    Log.i("APP", "Existe deja ------------------------------------------------------------");
+                } else {
+                    CityArray.add(cursor.getString(cursor.getColumnIndex(COL1)).toLowerCase());
+                }
+
+
+                //CityArray.add(cursor.getString(cursor.getColumnIndex(COL1)).toLowerCase());
+                Log.i("APP", "je suis là");
+
             } while (cursor.moveToNext());
         }
+        return CityArray;
     }
 
 

@@ -7,12 +7,12 @@
     tools:context=".MainActivity2">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/idRvCity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/idRvCity"
         android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
         android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
-    </androidx.recyclerview.widget.RecyclerView>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"></androidx.recyclerview.widget.RecyclerView>
     
 </RelativeLayout> 
