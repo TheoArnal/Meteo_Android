@@ -31,6 +31,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -80,7 +85,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         String location = city.getText().toString();
         validate = findViewById(R.id.button);
         history = findViewById(R.id.button2);
-
+        FirebaseDatabase fdb = FirebaseDatabase.getInstance("https://meteo-c7b70-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference myRef = fdb.getReference("City");
 
         history.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -98,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             fetchCity(c);
             Database mydb = new Database(this);
             mydb.insertCity(c);
+            myRef.setValue(c);
         });
     }
 
@@ -109,6 +116,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 == PackageManager.PERMISSION_GRANTED) {
 
             locationManager.requestLocationUpdates(provider, 400, 1, this);
+        }
+
+        Bundle extra = getIntent().getExtras();
+        if(extra != null){
+           String content = extra.getString("city");
+           fetchCity(content);
         }
     }
 
